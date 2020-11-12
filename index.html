@@ -1,40 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
-</head>
-<body>
-    <div align="center"><canvas id="myChart" width="1000" height="400"></canvas></div>
-    <table align="right">
-        <tr>
-            <th>Referrer URL</th>
-            <th>Referrer Count</th>
-        </tr>
-    {% for key,value in refs.items() %}
-    <tr>
-        <td>{{key}}</td>
-        <td>{{value}}</td>
-    </tr>
-        {% endfor %}
-    </table>
-    <table align="left">
-        <tr>
-            <th>Visited URL</th>
-            <th>Visited Count</th>
-        </tr>
-    {% for key,value in urls.items() %}
-    <tr>
-        <td>{{key}}</td>
-        <td>{{value}}</td>
-    </tr>
-        {% endfor %}
-    </table>  
-</body>
-<script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jimbru Analytics for {{title}}</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
+      integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
+    />
+  </head>
+  <body>
+    <h1 class="title" align="center">Jimbru Analytics for {{title}}</h1>
+    <div class="level">
+      <div class="level-item">
+        <canvas id="myChart" width="500" height="200"></canvas>
+      </div>
+      <div class="level-item">
+        <canvas id="hourpie" width="500" height="200"></canvas>
+      </div>
+    </div>
+    <div class="level">
+      <div class="level-left">
+        <table class="table is-hoverable">
+          <thead>
+            <tr>
+              <th>Referrer URL</th>
+              <th>Referrer Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for key,value in refs.items() %}
+            <tr>
+              <td>{{key}}</td>
+              <td>{{value}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="level-item">
+        <table class="table is-hoverable">
+          <thead>
+            <tr>
+              <th>Visited URL</th>
+              <th>Visited Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for key,value in urls.items() %}
+            <tr>
+              <td>{{key}}</td>
+              <td>{{value}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="level-item">
+        <table class="table is-hoverable">
+          <thead>
+            <tr>
+              <th>Visited IPs</th>
+              <th>IP Hits</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for key,value in ip.items() %}
+            <tr>
+              <td>{{key}}</td>
+              <td>{{value}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+  <script>
     var ctx = document.getElementById('myChart').getContext('2d');
+    var ptx = document.getElementById('hourpie').getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -45,14 +94,19 @@
                 backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
             ],
+            pointBackgroundColor: 'tomato',
             borderColor: [
-                'rgba(255, 99, 132, 1)',
+                'crimson',
             ],
             borderWidth: 1
             }]
         },
         options: {
             responsive: false,
+            title: {
+            display: true,
+            text: 'Hits in Last 7 days'
+        },
         scales: {
             yAxes: [{
                 ticks: {
@@ -80,8 +134,33 @@
         }
     }
     });
-    </script>
-<style>
+    var pieChart = new Chart(ptx,{
+        type :'pie',
+        data: {
+            labels: {{hours|safe}},
+            datasets:[{
+                data:{{hhits|tojson}},
+                backgroundColor: [
+        "tomato",
+        "crimson",
+        "blue",
+        "green",
+        "pink",
+        "rebeccapurple",
+        "azure"
+      ],
+            }]
+        },
+        options:{
+            responsive: false,
+            title: {
+                display: true,
+                text: 'Hourly Hits'
+            }
+        }
+    });
+  </script>
+  <style>
     {{css}}
-</style>
+  </style>
 </html>
