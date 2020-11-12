@@ -18,72 +18,111 @@
     <h1 class="title" align="center">Jimbru Analytics for {{title}}</h1>
     <div class="level">
       <div class="level-item">
-        <canvas id="myChart" width="500" height="200"></canvas>
+        <canvas id="myChart" width="600" height="300"></canvas>
       </div>
       <div class="level-item">
-        <canvas id="hourpie" width="500" height="200"></canvas>
+        <canvas id="hourpie" width="600" height="300"></canvas>
+      </div>
+    </div>
+    <br /><br />
+    <div class="level">
+      <div class="level-item">
+        <canvas id="ospie" width="600" height="300"></canvas>
+      </div>
+      <div class="level-item">
+        <canvas id="devbar" width="600" height="300"></canvas>
       </div>
     </div>
     <div class="level">
       <div class="level-left">
-        <table class="table is-hoverable">
-          <thead>
-            <tr>
-              <th>Referrer URL</th>
-              <th>Referrer Count</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for key,value in refs.items() %}
-            <tr>
-              <td>{{key}}</td>
-              <td>{{value}}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+        <div class="tbholder">
+          <table width="600" class="table is-hoverable">
+            <thead>
+              <tr>
+                <th>Visited URL</th>
+                <th>Visited Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for key,value in urls.items() %}
+              <tr>
+                <td>{{key}}</td>
+                <td>{{value}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="level-item">
-        <table class="table is-hoverable">
-          <thead>
-            <tr>
-              <th>Visited URL</th>
-              <th>Visited Count</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for key,value in urls.items() %}
-            <tr>
-              <td>{{key}}</td>
-              <td>{{value}}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+        <div class="tbholder">
+          <table width="600" class="table is-hoverable">
+            <thead>
+              <tr>
+                <th>Referrer URL</th>
+                <th>Referrer Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for key,value in refs.items() %}
+              <tr>
+                <td>{{key}}</td>
+                <td>{{value}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="level">
+      <div class="level-left">
+        <div class="tbholder">
+          <table width="600" class="table is-hoverable">
+            <thead>
+              <tr>
+                <th>Operating System</th>
+                <th>Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for key,value in os.items() %}
+              <tr>
+                <td>{{key}}</td>
+                <td>{{value}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
       <div class="level-item">
-        <table class="table is-hoverable">
-          <thead>
-            <tr>
-              <th>Visited IPs</th>
-              <th>IP Hits</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for key,value in ip.items() %}
-            <tr>
-              <td>{{key}}</td>
-              <td>{{value}}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+        <div class="tbholder">
+          <table width="600" class="table is-hoverable">
+            <thead>
+              <tr>
+                <th>Device Types</th>
+                <th>Count</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for key,value in dev.items() %}
+              <tr>
+                <td>{{key}}</td>
+                <td>{{value}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </body>
   <script>
     var ctx = document.getElementById('myChart').getContext('2d');
     var ptx = document.getElementById('hourpie').getContext('2d');
+    var ostx = document.getElementById('ospie').getContext('2d')
+    var devtx = document.getElementById('devbar').getContext('2d')
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -134,12 +173,31 @@
         }
     }
     });
-    var pieChart = new Chart(ptx,{
+    var hourPie = new Chart(ptx,{
         type :'pie',
         data: {
             labels: {{hours|safe}},
             datasets:[{
                 data:{{hhits|tojson}},
+                backgroundColor: [
+        "tomato","crimson","blue","green","pink","rebeccapurple","black","yellow","orange","magenta","lime","royalblue",
+      ],
+            }]
+        },
+        options:{
+            responsive: false,
+            title: {
+                display: true,
+                text: 'Hourly Hits'
+            }
+        }
+    });
+    var osPie = new Chart(ostx,{
+        type :'polarArea',
+        data: {
+            labels: {{os.keys()|list}},
+            datasets:[{
+                data:{{os.values()|list}},
                 backgroundColor: [
         "tomato",
         "crimson",
@@ -147,7 +205,25 @@
         "green",
         "pink",
         "rebeccapurple",
-        "azure"
+      ],
+            }]
+        },
+        options:{
+            responsive: false,
+            title: {
+                display: true,
+                text: 'Hourly Hits'
+            }
+        }
+    });
+    var osPie = new Chart(devtx,{
+        type :'doughnut',
+        data: {
+            labels: {{dev.keys()|list}},
+            datasets:[{
+                data:{{dev.values()|list}},
+                backgroundColor: [
+        "tomato","crimson","blue",
       ],
             }]
         },
@@ -161,6 +237,10 @@
     });
   </script>
   <style>
-    {{css}}
+    .tbholder {
+      width: 600px;
+      height: 400px;
+      overflow: scroll;
+    }
   </style>
 </html>
