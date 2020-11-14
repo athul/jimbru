@@ -1,7 +1,6 @@
 var ctx = document.getElementById('myChart').getContext('2d');
     var ptx = document.getElementById('hourpie').getContext('2d');
     var ostx = document.getElementById('ospie').getContext('2d')
-    var devtx = document.getElementById('devbar').getContext('2d')
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -92,25 +91,6 @@ var ctx = document.getElementById('myChart').getContext('2d');
             title: {
                 display: true,
                 text: 'Operating Systems'
-            }
-        }
-    });
-    var osPie = new Chart(devtx,{
-        type :'doughnut',
-        data: {
-            labels: {{dev.keys()|list}},
-            datasets:[{
-                data:{{dev.values()|list}},
-                backgroundColor: [
-        "tomato","crimson","blue",
-      ],
-            }]
-        },
-        options:{
-            responsive: false,
-            title: {
-                display: true,
-                text: 'Device Type'
             }
         }
     });

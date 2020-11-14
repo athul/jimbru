@@ -11,32 +11,51 @@
     ></script>
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
+      href="https://unpkg.com/a17t@0.2.9/dist/a17t.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/twinklecss@1.1.0/twinkle.min.css"
     />
   </head>
   <body>
-    <h1 class="title" align="center">Jimbru Analytics for {{title}}</h1>
-    <div class="level">
-      <div class="level-item">
-        <canvas id="myChart" width="600" height="300"></canvas>
+    <div class="w-full h-full flex flex-col">
+      <div class="flex justify-center">
+        <h2 class="text-2xl sm:text-4xl font-bold p-2 text-center">
+          Jimbru Analytics for {{title}}
+        </h2>
       </div>
-      <div class="level-item">
-        <canvas id="hourpie" width="600" height="300"></canvas>
+      <div
+        class="flex justify-between p-4 card"
+        style="background-color: #4a5568"
+      >
+        <div class="flex flex-col text-white">
+          <div class="text-sm font-semibold">Sessions</div>
+          <div class="text-4xl font-bold">97</div>
+          <div class="text-sm font-bold text-green-400">^ 100%</div>
+        </div>
       </div>
-    </div>
-    <br /><br />
-    <div class="level">
-      <div class="level-item">
-        <canvas id="ospie" width="600" height="300"></canvas>
+      <div class="flex">
+        <div class="card flex-1">
+          <canvas id="myChart" class="w-full" height="300"></canvas>
+        </div>
       </div>
-      <div class="level-item">
-        <canvas id="devbar" width="600" height="300"></canvas>
+      <div class="flex flex-col sm:flex-row">
+        <div class="card flex-1" style>
+          <div>
+            <canvas id="hourpie" class="w-full" height="300"></canvas>
+          </div>
+        </div>
+        <div class="card flex-1">
+          <div>
+            <canvas id="ospie" class="w-full" height="300"></canvas>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="level">
-      <div class="level-left">
-        <div class="tbholder">
-          <table width="600" class="table is-hoverable">
+
+      <div class="flex flex-col sm:flex-row">
+        <div class="card flex-1">
+          <table width="600" class="table overflow-y-scroll">
             <thead>
               <tr>
                 <th>Visited URL</th>
@@ -53,32 +72,29 @@
             </tbody>
           </table>
         </div>
-      </div>
-      <div class="level-item">
-        <div class="tbholder">
-          <table width="600" class="table is-hoverable">
-            <thead>
-              <tr>
-                <th>Referrer URL</th>
-                <th>Referrer Count</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for key,value in refs.items() %}
-              <tr>
-                <td>{{key}}</td>
-                <td>{{value}}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
+      
+      <div class="card flex-1">
+        <table width="600" class="table overflow-y-scroll">
+          <thead>
+            <tr>
+              <th>Referrer URL</th>
+              <th>Referrer Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for key,value in refs.items() %}
+            <tr>
+              <td>{{key}}</td>
+              <td>{{value}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
-    <div class="level">
-      <div class="level-left">
-        <div class="tbholder">
-          <table width="600" class="table is-hoverable">
+      <div class="flex flex-col sm:flex-row">
+        <div class="card flex-1">
+          <table width="600" class="table overflow-y-scroll">
             <thead>
               <tr>
                 <th>Operating System</th>
@@ -95,65 +111,58 @@
             </tbody>
           </table>
         </div>
+      <div class="card flex-1">
+        <table width="600" class="table overflow-y-scroll">
+          <thead>
+            <tr>
+              <th>Device Types</th>
+              <th>Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for key,value in dev.items() %}
+            <tr>
+              <td>{{key}}</td>
+              <td>{{value}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
-      <div class="level-item">
-        <div class="tbholder">
-          <table width="600" class="table is-hoverable">
+    </div>
+      <div class="flex">
+        <div class="card flex-1 overflow-auto">
+          <table class="table overflow-y-scroll">
             <thead>
               <tr>
-                <th>Device Types</th>
-                <th>Count</th>
+                <th>Time</th>
+                <th>IP</th>
+                <th>Country</th>
+                <th class="rf">Provider</th>
+                <th class="rf">City</th>
               </tr>
             </thead>
             <tbody>
-              {% for key,value in dev.items() %}
+              {% for os in cflg %} {% set _newdict = os.pop('time')%}{% for
+              key,value in os.items()%}
               <tr>
-                <td>{{key}}</td>
-                <td>{{value}}</td>
+                <td>{{_newdict|dateit}}</td>
+                <td>{{value['ip']}}</td>
+                <td>
+                  {{value['country_code']|flagize}} {{value['country_name']}}
+                </td>
+                <td>{{value['org']}}</td>
+                <td>{{value['city']}}</td>
               </tr>
-              {% endfor %}
+              {% endfor %} {% endfor %}
             </tbody>
           </table>
         </div>
       </div>
-    </div><div class="level">
-        <table width="600" class="table is-hoverable">
-          <thead>
-            <tr>
-              <th>Time</th>
-              <th>IP</th>
-              <th>Country</th>
-              <th>Provider</th>
-              <th>City</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for os in cflg %} {% set _newdict = os.pop('time')%}{% for key,value in os.items()%}
-            <tr>
-              <td>{{_newdict|dateit}}</td>
-              <td>{{value['ip']}}</td>
-              <td>{{value['country_code']|flagize}} {{value['country_name']}}</td>
-              <td>{{value['org']}}</td>
-              <td>{{value['city']}}</td>
-            </tr>
-            {% endfor %} {% endfor %}
-          </tbody>
-        </table>
-  </div>
+    </div>
   </body>
   <script>
     {{chart|safe}}
   </script>
-  <style>
-    .tbholder {
-      width: 600px;
-      height: 400px;
-      overflow: scroll;
-    }
-    .tbholder1{
-      width:max-content;
-      height: 400px;
-      overflow: scroll;
-    }
-  </style>
+  <style></style>
 </html>

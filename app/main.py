@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routes import analytics,templates
+from .routes import analytics,templates
 
 
 app = FastAPI()
