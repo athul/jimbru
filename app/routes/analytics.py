@@ -10,10 +10,12 @@ BEACON: str = b64decode(
 
 DOMAIN: str = "https://smq654.deta.dev"
 TITLE: str = "Notes Site"
-JS: str = """(function(){
-    var d=document,i=new Image,e=encodeURIComponent;
-    i.src='%s/a.gif?url='+e(d.location.href)+'&ref='+e(d.referrer);
-    })()""".replace("\n", "")
+JS: str = """(function () {
+    window.addEventListener('load', () => {
+        i = new Image;
+        i.src = '%s/a.gif?url=' + encodeURIComponent(document.location.href) + '&ref=' + encodeURIComponent(document.referrer) + '&lt=' + encodeURIComponent(window.performance.timing.domContentLoadedEventEnd - window.performance.timing.navigationStart);
+    })
+})()""".replace("\n", "")
 
 
 @router.get("/a.gif")

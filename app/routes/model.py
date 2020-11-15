@@ -20,4 +20,5 @@ class Pageviews(BaseModel):
     device_browser:str
     device_type:str
     os:str
+    loadtime:str
     hour: Optional[str]

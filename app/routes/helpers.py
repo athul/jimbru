@@ -62,6 +62,7 @@ def pushtoDB(req: Request) -> Dict:
     url = URL(url=req.query_params["url"])
     now = datetime.now().astimezone(timezone("Asia/Kolkata"))
     referrer = req.query_params["ref"] or ""
+    loadTime = req.query_params["lt"] or ""
     headers = dict(req.headers)
     bro, dev_type, dev, os = getDeviceDetails(headers['user-agent'])
     ipdata = getDatafromIP(headers["x-real-ip"])
@@ -77,6 +78,7 @@ def pushtoDB(req: Request) -> Dict:
         device_browser=bro,
         device=dev,
         device_type=dev_type,
+        loadtime=loadTime,
         os=os,
     )
     if any(l in url.url.host for l in ["localhost", "127.0.0.1"]):
@@ -96,6 +98,7 @@ def getAllthings():
     dev = []
     devtype = []
     browser = []
+    loadTime = []
     for datum in data:
         refs.append(datum["referrer"])
         urls.append(datum["url"])
@@ -104,6 +107,7 @@ def getAllthings():
         dev.append(datum['os'])
         browser.append(datum['device_browser'])
         devtype.append(datum['device_type'])
+        loadTime.append(int(datum['loadtime']))
 
     refListCleaned = list(Counter(refs).keys())
     for i in range(len(refListCleaned)):
@@ -153,4 +157,5 @@ def getAllthings():
         k: v
         for k, v in sorted(urlHitDict.items(), key=lambda item: item[1], reverse=True)
     }
-    return refSortDict, urlHitSortDict, HourListCleaned, HourHitNos, iptime, sum(urlHitNos), deviceSortDict, browserSortDict,devtypeSortDict
+    avgLoadTime = (sum(loadTime)/len(loadTime))
+    return refSortDict, urlHitSortDict, HourListCleaned, HourHitNos, iptime, sum(urlHitNos), deviceSortDict, browserSortDict,devtypeSortDict,avgLoadTime
