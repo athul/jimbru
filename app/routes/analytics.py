@@ -18,7 +18,7 @@ JS: str = """(function(){
 
 @router.get("/a.gif")
 def getImg(request: Request):
-    ll = pushtoDB(request)
+    pushtoDB(request)
     return Response(
         content=BEACON,
         media_type="img/gif",

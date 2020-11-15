@@ -30,9 +30,8 @@
         style="background-color: #4a5568"
       >
         <div class="flex flex-col text-white">
-          <div class="text-sm font-semibold">Sessions</div>
-          <div class="text-4xl font-bold">97</div>
-          <div class="text-sm font-bold text-green-400">^ 100%</div>
+          <div class="text-sm font-semibold">Hits</div>
+          <div class="text-4xl font-bold">{{tothits}}</div>
         </div>
       </div>
       <div class="flex">
@@ -115,6 +114,26 @@
         <table width="600" class="table overflow-y-scroll">
           <thead>
             <tr>
+              <th>Broswer Types</th>
+              <th>Count</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for key,value in browser.items() %}
+            <tr>
+              <td>{{key}}</td>
+              <td>{{value}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="flex flex-col sm:flex-row">
+      <div class="card flex-1">
+        <table width="600" class="table overflow-y-scroll">
+          <thead>
+            <tr>
               <th>Device Types</th>
               <th>Count</th>
             </tr>
@@ -129,7 +148,7 @@
           </tbody>
         </table>
       </div>
-    </div>
+  </div>
       <div class="flex">
         <div class="card flex-1 overflow-auto">
           <table class="table overflow-y-scroll">
@@ -137,9 +156,10 @@
               <tr>
                 <th>Time</th>
                 <th>IP</th>
+                <th>Device</th>
                 <th>Country</th>
-                <th class="rf">Provider</th>
-                <th class="rf">City</th>
+                <th>Provider</th>
+                <th>City</th>
               </tr>
             </thead>
             <tbody>
@@ -148,6 +168,7 @@
               <tr>
                 <td>{{_newdict|dateit}}</td>
                 <td>{{value['ip']}}</td>
+                <td>{{value['model']}}</td>
                 <td>
                   {{value['country_code']|flagize}} {{value['country_name']}}
                 </td>

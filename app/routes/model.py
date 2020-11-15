@@ -16,4 +16,8 @@ class Pageviews(BaseModel):
     ip: dict
     day: str
     time: str
+    device:str
+    device_browser:str
+    device_type:str
+    os:str
     hour: Optional[str]

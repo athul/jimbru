@@ -23,7 +23,7 @@ def renderIndex(request: Request):
     js = Template(open(path.join(pth, "templates/chart.js")).read())
 
     days, hits = getHitsPerDay()
-    refs, hiturls, hours, hhits, os, dev, iptime = getAllthings()
+    refs, hiturls, hours, hhits, iptime,totHits,os,browsers,dev = getAllthings()
     ipSorted = sorted(iptime, key=lambda k: k['time'], reverse=True)
     # ipSorted=[{'time':'2020-11-13 20:44:50.228370+05:30','ip' :{'asn': 'AS38266', 'city': 'Trivandrum', 'continent_code': 'AS', 'country': 'IN', 'country_area': 3287590, 'country_calling_code': '+91', 'country_capital': 'New Delhi', 'country_code': 'IN', 'country_code_iso3': 'IND', 'country_name': 'India', 'country_population': 1352617328, 'country_tld': '.in', 'currency': 'INR', 'currency_name': 'Rupee', 'in_eu': False, 'ip': '1.39.78.203', 'languages': 'en-IN,hi,bn,te,mr,ta,ur,gu,kn,ml,or,pa,as,bh,sat,ks,ne,sd,kok,doi,mni,sit,sa,fr,lus,inc', 'latitude': 8.4855, 'longitude': 76.9492, 'org': 'Vodafone India Ltd.', 'postal': '695021', 'region': 'Kerala', 'region_code': 'KL', 'timezone': 'Asia/Kolkata', 'utc_offset': '+0530', 'version': 'IPv4'}}, {'time':'2020-11-13 20:49:46.506089+05:30','ip':{'asn': 'AS38266', 'city': 'Trivandrum', 'continent_code': 'AS', 'country': 'IN', 'country_area': 3287590, 'country_calling_code': '+91', 'country_capital': 'New Delhi', 'country_code': 'IN', 'country_code_iso3': 'IND', 'country_name': 'India', 'country_population': 1352617328, 'country_tld': '.in', 'currency': 'INR', 'currency_name': 'Rupee', 'in_eu': False, 'ip': '1.39.78.203', 'languages': 'en-IN,hi,bn,te,mr,ta,ur,gu,kn,ml,or,pa,as,bh,sat,ks,ne,sd,kok,doi,mni,sit,sa,fr,lus,inc', 'latitude': 8.4855, 'longitude': 76.9492, 'org': 'Vodafone India Ltd.', 'postal': '695021', 'region': 'Kerala', 'region_code': 'KL', 'timezone': 'Asia/Kolkata', 'utc_offset': '+0530', 'version': 'IPv4'}}]
     # refs = {
@@ -59,14 +59,16 @@ def renderIndex(request: Request):
     return templates.TemplateResponse("index.html", {
         "request": request,
         "title": TITLE,
+        "tothits":totHits,
         "refs": refs,
         "urls": hiturls,
-        "dev": dev,
         "os": os,
+        "dev":dev,
         "cflg": ipSorted,
+        "browser":browsers,
         "time ": ipSorted,
         "chart": js.render(
-            hitarr=hits, days=days, hours=hours, hhits=hhits, dev=dev, os=os
+            hitarr=hits, days=days, hours=hours, hhits=hhits, os=os
         ),
     },
     )
