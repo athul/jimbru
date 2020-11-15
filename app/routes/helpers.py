@@ -19,9 +19,8 @@ def getDatafromIP(ip):
 
 def getDeviceDetails(agent) -> str:
     ua = parse(agent)
-    device_type = "OTHER"
+    device_type = "Other 👽"
     browser = ua.browser.family or ""
-    print("browser", browser)
     os = ua.os.family
     device = ua.device.family or ua.device.model or ""
     if (
@@ -30,13 +29,13 @@ def getDeviceDetails(agent) -> str:
         or (ua.device.family or ua.device.model or "").strip().lower()
         == "spider"
     ):
-        device_type = "ROBOT"
+        device_type = "Robot 🤖"
     elif ua.is_mobile:
-        device_type = "PHONE"
+        device_type = "Phone 📱"
     elif ua.is_tablet:
-        device_type = "TABLET"
+        device_type = "Tablet ⬆️📱"
     elif ua.is_pc:
-        device_type = "DESKTOP"
+        device_type = "Desktop 🖥"
     return browser, device_type, device, os
 
 
@@ -99,6 +98,7 @@ def getAllthings():
     devtype = []
     browser = []
     loadTime = []
+    countries = []
     for datum in data:
         refs.append(datum["referrer"])
         urls.append(datum["url"])
@@ -108,6 +108,7 @@ def getAllthings():
         browser.append(datum['device_browser'])
         devtype.append(datum['device_type'])
         loadTime.append(int(datum['loadtime']))
+        countries.append(f'{datum["ip"]["country"]}|{datum["ip"]["country_name"]}')
 
     refListCleaned = list(Counter(refs).keys())
     for i in range(len(refListCleaned)):
@@ -120,6 +121,9 @@ def getAllthings():
     # ---
     HourListCleaned = list(Counter(hours).keys())
     HourHitNos = list(Counter(hours).values())
+    # ---
+    countryCleaned = list(Counter(countries).keys())
+    CountryNos = list(Counter(countries).values())
     # ---
     deviceList = list(Counter(dev).keys())
     deviceListNos = list(Counter(dev).values())
@@ -140,6 +144,7 @@ def getAllthings():
                   for i in range(len(urlListCleaned))}
     devtypeDict = {devtypeList[i]: devtypeNos[i]
                    for i in range(len(devtypeList))}
+    countryDict = {countryCleaned[i]:CountryNos[i] for i in range(len(countryCleaned))}
     # ---
     browserSortDict = {
         k: v for k, v in sorted(browserDict.items(), key=lambda item: item[1], reverse=True)
@@ -158,4 +163,4 @@ def getAllthings():
         for k, v in sorted(urlHitDict.items(), key=lambda item: item[1], reverse=True)
     }
     avgLoadTime = (sum(loadTime)/len(loadTime))
-    return refSortDict, urlHitSortDict, HourListCleaned, HourHitNos, iptime, sum(urlHitNos), deviceSortDict, browserSortDict,devtypeSortDict,avgLoadTime
+    return refSortDict, urlHitSortDict, HourListCleaned, HourHitNos, iptime, sum(urlHitNos), deviceSortDict, browserSortDict,devtypeSortDict,avgLoadTime,countryDict

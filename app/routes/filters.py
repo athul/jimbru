@@ -12,3 +12,7 @@ def flagize(value):
 def hmantime(value):
     dtime = datetime.datetime.strptime(value, '%Y-%m-%d %H:%M:%S.%f%z')
     return dtime.strftime("%B %d %Y | %H:%M:%S")
+
+def getConutryCode(value):
+    cn = value.split("|")
+    return f"{flag.flag(cn[0])}  {cn[1]}"
