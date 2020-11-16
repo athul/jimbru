@@ -89,7 +89,7 @@ def pushtoDB(req: Request) -> Dict:
         return vars(data)
 
 
-def getAllthings():
+def getAllthings(ip:bool=False):
     data = next(db.fetch())
     # data = DATA
     refs = []
@@ -105,13 +105,14 @@ def getAllthings():
         refs.append(datum["referrer"])
         urls.append(datum["url"])
         hours.append(datum["hour"])
-        iptime.append({"time": datum["time"], "ip": datum["ip"]})
+        iptime.append({datum["time"]: datum["ip"]})
         dev.append(datum['os'])
         browser.append(datum['device_browser'])
         devtype.append(datum['device_type'])
         loadTime.append(int(datum['loadtime']))
         countries.append(f'{datum["ip"]["country"]}|{datum["ip"]["country_name"]}')
-
+    if ip:
+        return iptime
     refListCleaned = list(Counter(refs).keys())
     for i in range(len(refListCleaned)):
         if refListCleaned[i] == "":
@@ -165,4 +166,5 @@ def getAllthings():
         for k, v in sorted(urlHitDict.items(), key=lambda item: item[1], reverse=True)
     }
     avgLoadTime = (sum(loadTime)/len(loadTime))
+    
     return refSortDict, urlHitSortDict, HourListCleaned, HourHitNos, iptime, sum(urlHitNos), deviceSortDict, browserSortDict,devtypeSortDict,avgLoadTime,countryDict
