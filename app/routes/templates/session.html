@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/a17t@0.2.9/dist/a17t.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/twinklecss@1.1.0/twinkle.min.css"
+    />
+</head>
+<body>
+    <div class="w-full h-full flex flex-col">
+      <div class="flex">
+        <div class="card flex-1 overflow-auto">
+            <span class="button ~urge !low field mb-1 w-auto">
+                <a href="/">⬅ Back</a>
+            </span>
+          <table class="table overflow-y-scroll">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>IP</th>
+                <th>Device</th>
+                <th>Operating System</th>
+                <th>Browser</th>
+                <th>Country</th>
+                <th>Location</th>
+                <th>Provider</th>
+                <th>City</th>
+                <th>Region</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for key,value in ipdata.items()%}
+              <tr>
+                <td>{{key|dateit}}</td>
+                <td>{{value['ip']}}</td>
+                <td>{{value['model']}}</td>
+                <td>{{value['os']}}</td>
+                <td>{{value['browser']}}</td>
+                <td>
+                  {{value['country_code']|flagize}} {{value['country_name']}}
+                </td>
+                <td><a href="https://www.google.com/maps/search/?api=1&query={{value['latitude']}},{{value['longitude']}}">Open
+                    in Maps &nearr;</a></td>
+                
+                <td>{{value['org']}}</td>
+                <td>{{value['city']}}</td>
+                <td>{{value['region']}}</td>
+              </tr>
+              {% endfor %} 
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+</body>
+</html>

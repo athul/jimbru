@@ -179,7 +179,6 @@
             <thead>
               <tr>
                 <th>Time</th>
-                <th>IP</th>
                 <th>Device</th>
                 <th>Country</th>
                 <th>Provider</th>
@@ -187,11 +186,10 @@
               </tr>
             </thead>
             <tbody>
-              {% for os in cflg %} {% set _newdict = os.pop('time')%}{% for
+              {% for os in cflg %} {% for
               key,value in os.items()%}
               <tr>
-                <td>{{_newdict|dateit}}</td>
-                <td>{{value['ip']}}</td>
+                <td class="font-medium text-teal-600"><a href="/sess/{{key}}">{{key|dateit}}</a></td>
                 <td>{{value['model']}}</td>
                 <td>
                   {{value['country_code']|flagize}} {{value['country_name']}}

@@ -66,6 +66,8 @@ def pushtoDB(req: Request) -> Dict:
     bro, dev_type, dev, os = getDeviceDetails(headers['user-agent'])
     ipdata = getDatafromIP(headers["x-real-ip"])
     ipdata['model'] = dev
+    ipdata['os'] = os
+    ipdata['browser'] = bro
     data = Pageviews(
         url=f"{url.url.scheme}://{url.url.host}{url.url.path}",
         referrer=referrer,
