@@ -9,10 +9,13 @@ def flagize(value):
         return ""
 
 
-def hmantime(value):
+def hmantime(value,sm:bool=False):
     print(value)
     dtime = datetime.datetime.strptime(value, '%Y-%m-%d %H:%M:%S.%f%z')
-    return dtime.strftime("%B %d %Y | %H:%M:%S")
+    if sm:
+        return dtime.strftime("%I:%M %p")
+    else:
+        return dtime.strftime("%B %d %Y | %I:%M:%S %p")
 
 def getConutryCode(value):
     cn = value.split("|")

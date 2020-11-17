@@ -14,6 +14,7 @@ class Pageviews(BaseModel):
     referrer: str
     headers: dict
     ip: dict
+    ip_addr:str
     day: str
     time: str
     device:str

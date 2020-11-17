@@ -68,6 +68,7 @@ def pushtoDB(req: Request) -> Dict:
     ipdata['model'] = dev
     ipdata['os'] = os
     ipdata['browser'] = bro
+    
     data = Pageviews(
         url=f"{url.url.scheme}://{url.url.host}{url.url.path}",
         referrer=referrer,
@@ -75,6 +76,7 @@ def pushtoDB(req: Request) -> Dict:
         day=now.strftime("%Y/%m/%d"),
         time=str(now),
         ip=ipdata,
+        ip_addr=headers["x-real-ip"] or "",
         hour=now.strftime("%H"),
         device_browser=bro,
         device=dev,
@@ -101,6 +103,7 @@ def getAllthings(ip:bool=False):
     browser = []
     loadTime = []
     countries = []
+    urlfromIP = []
     for datum in data:
         refs.append(datum["referrer"])
         urls.append(datum["url"])
@@ -111,8 +114,10 @@ def getAllthings(ip:bool=False):
         devtype.append(datum['device_type'])
         loadTime.append(int(datum['loadtime']))
         countries.append(f'{datum["ip"]["country"]}|{datum["ip"]["country_name"]}')
+        urlfromIP.append({datum['ip_addr']:{"time":datum['time'],"url":datum['url'],"ref":datum['referrer'],"ldt":datum['loadtime']}})
     if ip:
-        return iptime
+        return iptime,urlfromIP
+    
     refListCleaned = list(Counter(refs).keys())
     for i in range(len(refListCleaned)):
         if refListCleaned[i] == "":

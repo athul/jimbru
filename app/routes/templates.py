@@ -47,8 +47,15 @@ def renderIndex(request: Request):
     # return nw
 @router.get("/sess/{time}")
 def getVisitorDetails(req:Request,time:str):
-    ip = getAllthings(True)
+    ip,urlsIP = getAllthings(True)
+    trdict =[]
     ipSorted = sorted(ip, key=lambda k: sorted(k.keys()), reverse=True)
+    urlSorted = sorted(urlsIP, key=lambda k: sorted(k.keys()), reverse=True)
     for data in ipSorted:
         if data.get(time):
-            return templates.TemplateResponse("session.html",{"request": req,"ipdata":data})
+            for udict in urlSorted:
+                print(udict)
+                if udict.get(data[time]['ip']):
+                    trdict.append(udict)
+                    print(trdict)
+            return templates.TemplateResponse("session.html",{"request": req,"ipdata":data,"hitdata":trdict})

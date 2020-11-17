@@ -17,7 +17,7 @@
     <div class="w-full h-full flex flex-col">
       <div class="flex">
         <div class="card flex-1 overflow-auto">
-            <span class="button ~urge !low field mb-1 w-auto">
+            <span class="bg-white hover:bg-purple-100 text-gray-800 font-semibold py-2 px-4 border border-purple-400 rounded shadow">
                 <a href="/">⬅ Back</a>
             </span>
           <table class="table overflow-y-scroll">
@@ -57,6 +57,28 @@
             </tbody>
           </table>
         </div>
+      </div>
+      <div class="card flex-1 overflow-auto">
+        <table class="table overflow-y-scroll">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>URL</th>
+              <th>ReF</th>
+              <th>Load Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for hdict in hitdata %}{% for key,value in hdict.items() %}
+            <tr>
+              <td>{{value['time']|dateit(True)}}</td>
+              <td>{{value['url']}}</td>
+              <td>{{value['ref']}}</td>
+              <td>{{value['ldt']}}</td>
+            </tr>
+            {% endfor %} {% endfor %} 
+          </tbody>
+        </table>
       </div>
     </div>
 </body>
