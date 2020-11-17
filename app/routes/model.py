@@ -1,8 +1,9 @@
 from pydantic import BaseModel, HttpUrl
 from typing import Optional
+from .settings import deta_key,deta_pname
 from deta import Deta
 
-db = Deta().Base()
+db = Deta(deta_key).Base(deta_pname)
 
 
 class URL(BaseModel):

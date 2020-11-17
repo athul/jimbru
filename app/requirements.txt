@@ -9,6 +9,7 @@ click==7.1.2
 deta==0.7
 emoji-country-flag==1.2.3
 fastapi==0.61.2
+fastapi-login==1.5.1
 h11==0.11.0
 httpcore==0.12.1
 idna==2.10
@@ -19,10 +20,14 @@ MarkupSafe==1.1.1
 mccabe==0.6.1
 multidict==5.0.0
 mypy-extensions==0.4.3
+passlib==1.7.4
 pycodestyle==2.6.0
 pydantic==1.7.2
+PyJWT==1.7.1
 pylint==2.6.0
 python-dateutil==2.8.1
+python-dotenv==0.15.0
+python-multipart==0.0.5
 pytz==2020.4
 PyYAML==5.3.1
 requests==2.25.0

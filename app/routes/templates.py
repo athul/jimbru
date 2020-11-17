@@ -4,9 +4,10 @@ from .filters import flagize,hmantime,getConutryCode
 from datetime import datetime
 from jinja2 import Template
 from .analytics import TITLE
+from .auth import manager
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request,Depends,security
 from os import path
 
 router = APIRouter()
@@ -18,8 +19,9 @@ templates.env.filters['dateit'] = hmantime
 templates.env.filters['getctCode'] = getConutryCode
 
 
-@router.get("/")
-def renderIndex(request: Request):
+@router.get("/dash",response_class=HTMLResponse)
+def renderIndex(request: Request,user=Depends(manager)):
+    print(user)
     js = Template(open(path.join(pth, "templates/chart.js")).read())
     days, hits = getHitsPerDay()
     refs, hiturls, hours, hhits, iptime,totHits,os,browsers,dev,lt,ctDict = getAllthings()
@@ -45,8 +47,8 @@ def renderIndex(request: Request):
     )
 
     # return nw
-@router.get("/sess/{time}")
-def getVisitorDetails(req:Request,time:str):
+@router.get("/sess/{time}",response_class=HTMLResponse)
+def getVisitorDetails(req:Request,time:str,user=Depends(manager)):
     ip,urlsIP = getAllthings(True)
     trdict =[]
     ipSorted = sorted(ip, key=lambda k: sorted(k.keys()), reverse=True)
@@ -59,3 +61,7 @@ def getVisitorDetails(req:Request,time:str):
                     trdict.append(udict)
                     print(trdict)
             return templates.TemplateResponse("session.html",{"request": req,"ipdata":data,"hitdata":trdict})
+
+@router.get("/",response_class=HTMLResponse)
+def loginwithCreds(request:Request):
+    return templates.TemplateResponse("login.html",{"request":request})
