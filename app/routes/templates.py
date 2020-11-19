@@ -64,4 +64,5 @@ def getVisitorDetails(req:Request,time:str,user=Depends(manager)):
 
 @router.get("/",response_class=HTMLResponse)
 def loginwithCreds(request:Request):
-    return templates.TemplateResponse("login.html",{"request":request})
+    with open(path.join(pth, "templates/login.html")) as f:
+        return HTMLResponse(content=f.read())
