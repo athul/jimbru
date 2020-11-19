@@ -16,70 +16,105 @@
 <body>
     <div class="w-full h-full flex flex-col">
       <div class="flex">
-        <div class="card flex-1 overflow-auto">
-            <span class="bg-white hover:bg-purple-100 text-gray-800 font-semibold py-2 px-4 border border-purple-400 rounded shadow">
-                <a href="/dash">⬅ Back</a>
-            </span>
-          <table class="table overflow-y-scroll">
-            <thead>
-              <tr>
-                <th>Time</th>
-                <th>IP</th>
-                <th>Device</th>
-                <th>Operating System</th>
-                <th>Browser</th>
-                <th>Country</th>
-                <th>Location</th>
-                <th>Provider</th>
-                <th>City</th>
-                <th>Region</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for key,value in ipdata.items()%}
-              <tr>
-                <td>{{key|dateit}}</td>
-                <td>{{value['ip']}}</td>
-                <td>{{value['model']}}</td>
-                <td>{{value['os']}}</td>
-                <td>{{value['browser']}}</td>
-                <td>
-                  {{value['country_code']|flagize}} {{value['country_name']}}
-                </td>
-                <td><a href="https://www.google.com/maps/search/?api=1&query={{value['latitude']}},{{value['longitude']}}">Open
-                    in Maps &nearr;</a></td>
-                
-                <td>{{value['org']}}</td>
-                <td>{{value['city']}}</td>
-                <td>{{value['region']}}</td>
-              </tr>
-              {% endfor %} 
-            </tbody>
-          </table>
+      </div>
+      <div class="card flex-1 overflow-auto text-white" style="background-color: #4a5568;">
+        <span class="bg-white hover:bg-purple-100 text-gray-800 font-semibold py-2 px-4 border border-purple-400 rounded shadow">
+          <a href="/dash">⬅ Back</a>
+      </span>
+      {% for key,value in ipdata.items()%}
+      <div class="flex items-center pt-2 pb-4">
+        <div class="flex-grow"></div>
+      </div>
+      <div class="flex justify-between sm:justify-start py-4">
+        <div class="flex flex-col font-bold text-sm  sm:pr-32">
+          <div>
+            Time
+          </div>
+          <div>
+            {{key|dateit}}
+          </div>
+        </div>
+        <div class="flex flex-col font-bold text-sm  sm:pr-32">
+          <div>
+            Browser
+          </div>
+          <div>
+            {{value['browser']}}
+          </div>
+        </div>
+        <div class="flex flex-col font-bold text-sm  sm:pr-32">
+          <div>
+            OS
+          </div>
+          <div>
+            {{value['os']}}
+          </div>
+        </div>
+        <div class="flex flex-col font-bold text-sm  sm:pr-32">
+          <div>
+            Location
+          </div>
+          <div>
+            <a href="https://www.google.com/maps/search/?api=1&query={{value['latitude']}},{{value['longitude']}}">Open
+              in Maps &nearr;</a>
+          </div>
+        </div>
+        <div class="flex flex-col font-bold text-sm sm:pr-32">
+          <div>
+            Device
+          </div>
+          <div>
+            {{value['model']}}
+          </div>
         </div>
       </div>
-      <div class="card flex-1 overflow-auto">
-        <table class="table overflow-y-scroll">
-          <thead>
-            <tr>
-              <th>Time</th>
-              <th>URL</th>
-              <th>ReF</th>
-              <th>Load Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for hdict in hitdata %}{% for key,value in hdict.items() %}
-            <tr>
-              <td>{{value['time']|dateit(True)}}</td>
-              <td>{{value['url']}}</td>
-              <td>{{value['ref']}}</td>
-              <td>{{value['ldt']}}</td>
-            </tr>
-            {% endfor %} {% endfor %} 
-          </tbody>
-        </table>
+      <div class="flex justify-between sm:justify-start py-4">
+        <div class="flex flex-col font-bold text-sm  sm:pr-32">
+          <div>
+            Network
+          </div>
+          <div>
+            {{value['org']}}
+          </div>
+        </div>
+        <div class="flex flex-col font-bold text-sm  sm:pr-32">
+          <div>
+            Country
+          </div>
+          <div>
+            {{value['country_code']|flagize}} {{value['country_name']}}
+          </div>
+        </div>
       </div>
+      {% endfor %} 
+    </div>
+      {% for hdict in hitdata %}{% for key,value in hdict.items() %}
+      <div class="sm:pl-4 md:pl-16">
+        <div class="flex flex-col sm:flex-row sm:items-center">
+          <div class="font-bold px-4">{{value['time']|dateit(True)}}</div>
+          <div class="card flex flex-1 overflow-auto">
+            <div class="flex flex-col">
+              <div class="font-bold my-1">
+                {{value['url']}}
+              </div>
+              <div class="text-black text-opacity-50 font-bold text-sm">
+                {% if value['ref']|length %}via {{value['ref']}} {%else%} Direct {%endif%}
+              </div>
+            </div>
+            <div class="flex flex-row-reverse flex-1">
+              <div class="flex flex-col px-4">
+                <div class="text-black text-opacity-50 font-bold text-sm font-bold">
+                  Load
+                </div>
+                <div class="font-bold my-1">
+                  {{value['ldt']}}ms
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %} {% endfor %} 
     </div>
 </body>
 </html>
