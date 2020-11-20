@@ -25,6 +25,7 @@ def renderIndex(request: Request,user=Depends(manager)):
     js = Template(open(path.join(pth, "templates/chart.js")).read())
     days, hits = getHitsPerDay()
     refs, hiturls, hours, hhits, iptime,totHits,os,browsers,dev,lt,ctDict = getAllthings()
+    print(refs, "----\n----",hiturls, "----\n----",hours, "----\n----",hhits, "----\n----",iptime,"----\n----",totHits,"----\n----",os,"----\n----",browsers,"----\n----",dev,"----\n----",lt,"----\n----",ctDict,"---\n---",days,"---\n---",hits )
     ipSorted = sorted(iptime, key=lambda k: sorted(k.keys()), reverse=True)
 
     return templates.TemplateResponse("index.html", {
@@ -56,11 +57,11 @@ def getVisitorDetails(req:Request,time:str,user=Depends(manager)):
     for data in ipSorted:
         if data.get(time):
             for udict in urlSorted:
-                print(udict)
                 if udict.get(data[time]['ip']):
                     trdict.append(udict)
-                    print(trdict)
-            return templates.TemplateResponse("session.html",{"request": req,"ipdata":data,"hitdata":trdict})
+                    print("Trdict",trdict)
+            trSortdict = sorted(trdict,key=lambda key:key.get(data[time]['ip'])['time'],reverse=True)
+            return templates.TemplateResponse("session.html",{"request": req,"ipdata":data,"hitdata":trSortdict})
 
 @router.get("/",response_class=HTMLResponse)
 def loginwithCreds(request:Request):
