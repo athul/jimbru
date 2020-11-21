@@ -11,7 +11,6 @@ manager = LoginManager(SECRET,tokenUrl="/auth/login",use_cookie=True)
 manager.cookie_name = "jimbru"
 
 DB = {USERNAME:{"password":PASSWORD}}
-print(DB)
 
 @manager.user_loader
 def load_user(username:str):
@@ -22,7 +21,6 @@ def load_user(username:str):
 def login(data: OAuth2PasswordRequestForm = Depends()):
     username = data.username
     password = data.password
-    print(username,password)
     user = load_user(username)
     if not user:
         raise InvalidCredentialsException

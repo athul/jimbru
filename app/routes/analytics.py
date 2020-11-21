@@ -1,15 +1,15 @@
 from fastapi import APIRouter, Request, Response
 from base64 import b64decode
 from .helpers import pushtoDB
-
+from .settings import domain, title
 
 router = APIRouter()
 
 BEACON: str = b64decode(
     "R0lGODlhAQABAIAAANvf7wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==")
 
-DOMAIN: str = "https://smq654.deta.dev"
-TITLE: str = "Notes Site"
+DOMAIN: str = domain
+TITLE: str = title
 JS: str = """(function () {
     window.addEventListener('load', () => {
         i = new Image;

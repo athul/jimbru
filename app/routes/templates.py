@@ -7,7 +7,7 @@ from .analytics import TITLE
 from .auth import manager
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from fastapi import APIRouter, Request,Depends,security
+from fastapi import APIRouter, Request,Depends
 from os import path
 
 router = APIRouter()
@@ -21,11 +21,9 @@ templates.env.filters['getctCode'] = getConutryCode
 
 @router.get("/dash",response_class=HTMLResponse)
 def renderIndex(request: Request,user=Depends(manager)):
-    print(user)
     js = Template(open(path.join(pth, "templates/chart.js")).read())
     days, hits = getHitsPerDay()
     refs, hiturls, hours, hhits, iptime,totHits,os,browsers,dev,lt,ctDict = getAllthings()
-    print(refs, "----\n----",hiturls, "----\n----",hours, "----\n----",hhits, "----\n----",iptime,"----\n----",totHits,"----\n----",os,"----\n----",browsers,"----\n----",dev,"----\n----",lt,"----\n----",ctDict,"---\n---",days,"---\n---",hits )
     ipSorted = sorted(iptime, key=lambda k: sorted(k.keys()), reverse=True)
 
     return templates.TemplateResponse("index.html", {
@@ -59,7 +57,6 @@ def getVisitorDetails(req:Request,time:str,user=Depends(manager)):
             for udict in urlSorted:
                 if udict.get(data[time]['ip']):
                     trdict.append(udict)
-                    print("Trdict",trdict)
             trSortdict = sorted(trdict,key=lambda key:key.get(data[time]['ip'])['time'],reverse=True)
             return templates.TemplateResponse("session.html",{"request": req,"ipdata":data,"hitdata":trSortdict})
 
