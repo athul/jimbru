@@ -9,7 +9,7 @@ Jimbru is an Privacy Oriented web analytics Server which is built with FastAPI a
 - Lightweight
 - Privacy Oriented
 - Easily Deployable (on deta.sh)
-- 6 lines og JS code gets the current URL, referrer and load time.
+- 6 lines of JS code gets the current URL, referrer and load time.
 - Charts with chart.js 📊
 - Jinja2 Templating and Tailwind CSS for Frontend
 - Cookie based Authentication
@@ -51,6 +51,16 @@ Before deploying you need to get some Credentials
 4. Run `$ deta update -e routes/.env` to update the environment variables in the micro.
 5. Run `$ deta deploy` inside the app directory and the code will be deployed.
 6. Profit
+
+---
+
+## Usage
+
+Add a `<script>` tag for the site
+
+```html
+<script src="https://<DOMAIN>/a.js" type="text/javascript"></script>
+```
 
 ## TODO
 
