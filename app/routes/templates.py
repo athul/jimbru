@@ -1,5 +1,5 @@
 from .analytics import router
-from .helpers import getHitsPerDay, getAllthings
+from .helpers import getAllthings
 from .filters import flagize,hmantime,getConutryCode
 from datetime import datetime
 from jinja2 import Template
@@ -22,7 +22,9 @@ templates.env.filters['getctCode'] = getConutryCode
 @router.get("/dash",response_class=HTMLResponse)
 def renderIndex(request: Request,user=Depends(manager)):
     js = Template(open(path.join(pth, "templates/chart.js")).read())
-    days, hits = getHitsPerDay()
+    days = ['2020/11/20', '2020/11/21', '2020/11/22', '2020/11/23', '2020/11/24', '2020/11/25', '2020/11/26']
+    hits = [12, 0, 1, 0, 0, 7, 5]
+    dayHits = getAllthings(dayNeed=True)
     refs, hiturls, hours, hhits, iptime,totHits,os,browsers,dev,lt,ctDict = getAllthings()
     ipSorted = sorted(iptime, key=lambda k: sorted(k.keys()), reverse=True)
 
@@ -40,7 +42,7 @@ def renderIndex(request: Request,user=Depends(manager)):
         "time ": ipSorted,
         "countries":ctDict,
         "chart": js.render(
-            hitarr=hits, days=days, hours=hours, hhits=hhits, os=os
+            hitarr=dayHits, hours=hours, hhits=hhits, os=os
         ),
     },
     )

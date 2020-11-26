@@ -4,11 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Jimbru Analytics for {{title}}</title>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
-      integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://unpkg.com/frappe-charts@1.2.4/dist/frappe-charts.min.iife.js"></script>
     <link
       rel="stylesheet"
       href="https://unpkg.com/a17t@0.2.9/dist/a17t.css"
@@ -42,18 +38,18 @@
       </div>
       <div class="flex">
         <div class="card flex-1">
-          <canvas id="myChart" class="w-full" height="300"></canvas>
+          <div id="myChart" class="w-full" height="500"></div>
         </div>
       </div>
       <div class="flex flex-col sm:flex-row">
         <div class="card flex-1" style>
           <div>
-            <canvas id="hourpie" class="w-full" height="300"></canvas>
+            <div id="hourpie" class="w-full" height="300"></div>
           </div>
         </div>
         <div class="card flex-1">
           <div>
-            <canvas id="ospie" class="w-full" height="300"></canvas>
+            <div id="ospie" class="w-full" height="300"></div>
           </div>
         </div>
       </div>
@@ -207,5 +203,11 @@
   <script>
     {{chart|safe}}
   </script>
-  <style></style>
+  <style>
+/* x axis */
+.frappe-chart .x.axis .line-vertical,
+.frappe-chart .x.axis text {
+    display: none;
+}
+  </style>
 </html>

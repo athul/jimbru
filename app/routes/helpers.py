@@ -39,20 +39,6 @@ def getDeviceDetails(agent) -> str:
     return browser, device_type, device, os
 
 
-def getHitsPerDay():
-    """
-    return 2 lists
-    """
-    today = datetime.now().astimezone(timezone("Asia/Kolkata"))
-    hits = []
-    days = []
-    for i in range(0, 7):
-        day = (today - timedelta(days=i)).strftime("%Y/%m/%d")
-        days.append(day)
-        day_hits = db.fetch({"day": day})
-        hits.append(len(next(day_hits)))
-    return days[::-1], hits[::-1]
-
 
 def pushtoDB(req: Request) -> Dict:
     """
@@ -90,10 +76,8 @@ def pushtoDB(req: Request) -> Dict:
         db.put(vars(data))
         return vars(data)
 
-
-def getAllthings(ip:bool=False):
+def getAllthings(ip:bool=False,dayNeed:bool=False):
     data = next(db.fetch())
-    # data = DATA
     refs = []
     urls = []
     hours = []
@@ -104,6 +88,8 @@ def getAllthings(ip:bool=False):
     loadTime = []
     countries = []
     urlfromIP = []
+    days = {}    
+    today = datetime.now().astimezone(timezone("Asia/Kolkata"))
     for datum in data:
         refs.append(datum["referrer"])
         urls.append(datum["url"])
@@ -115,6 +101,16 @@ def getAllthings(ip:bool=False):
         loadTime.append(int(datum['loadtime']))
         countries.append(f'{datum["ip"]["country"]}|{datum["ip"]["country_name"]}')
         urlfromIP.append({datum['ip_addr']:{"time":datum['time'],"url":datum['url'],"ref":datum['referrer'],"ldt":datum['loadtime']}})
+       
+    for i in range(0, 30):
+        day = (today - timedelta(days=i)).strftime("%Y/%m/%d")
+        days[day]=0
+        for d in data:
+            if d.get('day') == day:
+                days[day]+=1
+    sortedDays = {k:v for k,v in sorted(days.items(), key=lambda item: item[0])}
+    if dayNeed:
+        return sortedDays
     if ip:
         return iptime,urlfromIP
     
@@ -173,3 +169,12 @@ def getAllthings(ip:bool=False):
     avgLoadTime = (sum(loadTime)/len(loadTime))
     
     return refSortDict, urlHitSortDict, HourListCleaned, HourHitNos, iptime, sum(urlHitNos), deviceSortDict, browserSortDict,devtypeSortDict,avgLoadTime,countryDict
+
+def getTimes():
+    data = DATA
+    today = datetime.now().astimezone(timezone("Asia/Kolkata"))
+    for i in range(0, 7):
+        day = (today - timedelta(days=i)).strftime("%Y/%m/%d")
+        for d in data:
+                if d.get('day') == day:
+                    dt.append(day)

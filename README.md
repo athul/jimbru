@@ -2,7 +2,7 @@
 
 Jimbru is an Privacy Oriented web analytics Server which is built with FastAPI and Deta Base as DB.
 
-> Jimbru is heavily inspired by [Shynet](https:github.com/milesmcc/shynet) which is also an Analytics server built with Django.
+> Jimbru is heavily inspired by [Shynet](https://github.com/milesmcc/shynet) which is also an Analytics server built with Django.
 
 ## Features
 
