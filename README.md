@@ -4,17 +4,27 @@ Jimbru is an Privacy Oriented web analytics Server which is built with FastAPI a
 
 > Jimbru is heavily inspired by [Shynet](https://github.com/milesmcc/shynet) which is also an Analytics server built with Django.
 
+
+**Not for Production Level use. It's hacky to the core. I made it for a Personal Use and doesn't have any fancy features.**
+
+
 ## Features
 
 - Lightweight
 - Privacy Oriented
 - Easily Deployable (on deta.sh)
 - 6 lines of JS code gets the current URL, referrer and load time.
-- Charts with chart.js 📊
+- Charts with [Frappe Charts](https://frappe.io/charts) 📊
 - Jinja2 Templating and Tailwind CSS for Frontend
 - Cookie based Authentication
 - User OS and device from `user-agent` header
 - user location and network from user ip header
+
+## Not Included Features
+- Caching
+- Bounce rate
+- Session Time
+- Unique Hits
 
 ## Demo
 
