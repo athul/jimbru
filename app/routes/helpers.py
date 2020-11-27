@@ -169,12 +169,3 @@ def getAllthings(ip:bool=False,dayNeed:bool=False):
     avgLoadTime = (sum(loadTime)/len(loadTime))
     
     return refSortDict, urlHitSortDict, HourListCleaned, HourHitNos, iptime, sum(urlHitNos), deviceSortDict, browserSortDict,devtypeSortDict,avgLoadTime,countryDict
-
-def getTimes():
-    data = DATA
-    today = datetime.now().astimezone(timezone("Asia/Kolkata"))
-    for i in range(0, 7):
-        day = (today - timedelta(days=i)).strftime("%Y/%m/%d")
-        for d in data:
-                if d.get('day') == day:
-                    dt.append(day)
