@@ -1,3 +1,5 @@
+# IMPORTANT: There seems to be an error in deploying this, planning for a rewrite of the whole.
+
 # Jimbru
 
 Jimbru is an Privacy Oriented web analytics Server which is built with FastAPI and Deta Base as DB.
